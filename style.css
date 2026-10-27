@@ -1,0 +1,400 @@
+/* =========================================
+   BILANCA – stilovi
+   Mirno: bijela, nježna plava, siva
+   ========================================= */
+
+/* ===== 1. VARIJABLE ===== */
+:root {
+  --plava: #2f5d8a;          /* glavna boja: gumbi, linkovi */
+  --plava-tamna: #234869;    /* hover na gumbima */
+  --plava-svijetla: #eaf1f8; /* pozadine sekcija */
+  --tekst: #1f2933;          /* glavni tekst */
+  --siva: #52606d;           /* sporedni tekst */
+  --linija: #dde3ea;         /* rubovi i crte */
+  --bijela: #ffffff;
+
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --sirina: 1100px;
+  --radius: 10px;
+}
+
+/* ===== 2. OSNOVA ===== */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  font-size: 1rem;           /* 16 px */
+  line-height: 1.6;
+  color: var(--tekst);
+  background: var(--bijela);
+}
+
+h1, h2, h3 { line-height: 1.25; margin: 0 0 16px; }
+h1 { font-size: 2rem; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.125rem; }
+p  { margin: 0 0 16px; }
+
+a { color: var(--plava); }
+
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible {
+  outline: 3px solid var(--plava);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* sve sekcije u mainu: isti razmaci i širina */
+main section {
+  max-width: var(--sirina);
+  margin: 0 auto;
+  padding: 48px 16px;
+}
+
+/* ===== 3. GUMB ===== */
+.btn {
+  display: inline-block;
+  padding: 12px 24px;
+  min-height: 48px;          /* dovoljno velik za prst */
+  background: var(--plava);
+  color: var(--bijela);
+  text-decoration: none;
+  font-weight: 600;
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+}
+.btn:hover { background: var(--plava-tamna); }
+
+/* ===== 4. HEADER (kao Šapica) ===== */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1rem max(1.5rem, calc((100% - 1100px) / 2));
+  background: white;
+  box-shadow: 0 2px 6px rgba(0,0,0,.06);
+}
+
+.logo { font-weight: 700; font-size: 1.4rem; text-decoration: none; color: var(--tekst); }
+
+nav { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
+nav a { text-decoration: none; color: var(--tekst); }
+nav a:hover { color: var(--plava); }
+
+/* gumb Kontakt u izborniku ostaje bijeli tekst na plavom */
+nav a.btn,
+nav a.btn:hover { color: var(--bijela); }
+
+/* trenutna stranica u izborniku */
+nav a[aria-current="page"] {
+  font-weight: 700;
+  border-bottom: 2px solid var(--plava);
+}
+
+/* izbornik: na računalu linkovi u jednom redu */
+nav ul {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+}
+
+/* na računalu se gumb ☰ ne prikazuje */
+.hamburger {
+  display: none;
+  background: none;
+  border: 0;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+/* mobitel: zaslon uži od 700px */
+@media (max-width: 700px) {
+  .hamburger { display: block; }
+
+  nav ul {
+    display: none;            /* linkovi su skriveni */
+    flex-direction: column;   /* jedan ispod drugoga */
+    width: 100%;
+  }
+
+  nav ul.otvoren { display: flex; }  /* prikažu se kad JS doda klasu */
+
+  nav { flex-wrap: wrap; }
+}
+
+/* ===== 5. HERO ===== */
+main .hero {
+  max-width: none;               /* pozadina ide od ruba do ruba ekrana */
+  padding: 64px max(16px, calc((100% - 1100px) / 2));
+  text-align: center;
+
+  /* gradijent: bijela → svijetloplava → bijela, širi od ekrana */
+  background: linear-gradient(90deg, #ffffff, #dbe9f6, #ffffff, #dbe9f6);
+  background-size: 300% 100%;
+  animation: hero-val 12s ease-in-out infinite alternate;
+}
+
+/* pomiče gradijent s lijeva na desno */
+@keyframes hero-val {
+  from { background-position: 0% 50%; }
+  to   { background-position: 100% 50%; }
+}
+
+/* poštuje korisnike kojima pokreti smetaju (postavka u sustavu) */
+@media (prefers-reduced-motion: reduce) {
+  main .hero { animation: none; }
+}
+
+.hero h1 {
+  font-size: clamp(2.5rem, 6vw, 4rem);
+}
+.hero p {
+  font-size: 1.125rem;
+  color: var(--siva);
+  max-width: 60ch;
+  margin: 0 auto 24px;
+}
+
+/* veći gumb samo u heroju */
+.hero .btn {
+  font-size: 1.25rem;          /* veći tekst (inače 1rem) */
+  padding: 18px 56px;          /* viši i širi (inače 12px 24px) */
+  min-width: 260px;            /* nikad uži od 260 px */
+}
+
+/* ===== 6. USLUGE – KARTICE ===== */
+.kartice {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.kartica {
+  padding: 24px;
+  background: var(--bijela);
+  border: 1px solid var(--linija);
+  border-radius: var(--radius);
+}
+.kartica p { color: var(--siva); margin: 0; }
+
+/* ===== 7. ZAŠTO BILANCA ===== */
+.zasto ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 16px;
+}
+.zasto li {
+  padding: 20px 24px;
+  background: var(--plava-svijetla);
+  border-radius: var(--radius);
+}
+
+/* ===== 8. RECENZIJE ===== */
+.recenzije {
+  display: grid;
+  gap: 16px;
+}
+.recenzije h2 { margin-bottom: 0; }
+.recenzije blockquote {
+  margin: 0;
+  padding: 24px;
+  border-left: 4px solid var(--plava);
+  background: var(--plava-svijetla);
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+.recenzije blockquote p { font-style: italic; }
+.recenzije cite {
+  font-style: normal;
+  font-weight: 600;
+  color: var(--siva);
+}
+
+/* ===== 9. ČESTA PITANJA ===== */
+.faq details {
+  border-bottom: 1px solid var(--linija);
+  padding: 16px 0;
+}
+.faq summary {
+  font-weight: 600;
+  cursor: pointer;
+}
+.faq details p {
+  margin: 12px 0 0;
+  color: var(--siva);
+}
+
+/* ===== 10. POZIV NA DNU ===== */
+main .pravila {
+  text-align: center;
+  background: var(--plava-svijetla);
+  border-radius: var(--radius);
+  margin-bottom: 48px;
+}
+
+/* ===== 11. FOOTER ===== */
+footer {
+  padding: 24px 16px;
+  text-align: center;
+  color: var(--siva);
+  border-top: 1px solid var(--linija);
+  font-size: 0.9375rem;
+}
+footer p { margin: 0; }
+
+/* ===== 12. VEĆI EKRANI (tablet i računalo) ===== */
+@media (min-width: 768px) {
+  h1 { font-size: 2.75rem; }
+  h2 { font-size: 1.875rem; }
+
+  .kartice { grid-template-columns: repeat(3, 1fr); }
+  .zasto ul { grid-template-columns: repeat(3, 1fr); }
+  .recenzije { grid-template-columns: 1fr 1fr; }
+  .recenzije h2 { grid-column: 1 / -1; }   /* naslov preko cijele širine */
+}
+
+/* ===== 13. O NAMA – fotografija i tekst ===== */
+.o-meni {
+  display: grid;
+  gap: 32px;
+  align-items: center;
+}
+.o-meni img {
+  width: 100%;
+  max-width: 420px;
+  height: auto;
+  border-radius: var(--radius);
+  background: var(--plava-svijetla);
+}
+
+/* ===== 14. KORACI SURADNJE ===== */
+.koraci {
+  list-style: none;
+  counter-reset: korak;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 16px;
+}
+.koraci li {
+  counter-increment: korak;
+  padding: 24px;
+  border: 1px solid var(--linija);
+  border-radius: var(--radius);
+}
+.koraci li::before {
+  content: counter(korak);
+  display: inline-grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  margin-bottom: 12px;
+  border-radius: 50%;
+  background: var(--plava);
+  color: var(--bijela);
+  font-weight: 700;
+}
+.koraci p { margin: 0; color: var(--siva); }
+
+@media (min-width: 768px) {
+  .o-meni { grid-template-columns: 2fr 3fr; }
+  .koraci { grid-template-columns: repeat(4, 1fr); }
+}
+
+
+/* ===== 15. USLUGE – paketi ===== */
+.paket {
+  display: flex;
+  flex-direction: column;      /* sadržaj jedan ispod drugoga */
+}
+.paket ul {
+  list-style: none;
+  padding: 0;
+  margin: 16px 0 24px;
+}
+.paket li {
+  padding: 6px 0 6px 28px;
+  position: relative;
+}
+.paket li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--plava);
+  font-weight: 700;
+}
+.paket .btn {
+  margin-top: auto;            /* gumb uvijek na dnu kartice */
+  text-align: center;
+}
+
+/* naslov vidljiv samo čitačima zaslona */
+.vizualno-skriveno {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ===== 16. KONTAKT (kao Šapica) ===== */
+.kontakt {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  align-items: start;
+}
+.obrazac, .info {
+  background: var(--bijela);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,.06);
+}
+.obrazac { display: flex; flex-direction: column; gap: .4rem; }
+.obrazac h2, .info h2 { font-size: 1.1rem; margin: 1rem 0 .25rem; }
+.obrazac h2:first-of-type, .info h2:first-child { margin-top: 0; }
+.obrazac label { font-weight: 600; margin-top: .6rem; }
+.obrazac input, .obrazac select, .obrazac textarea {
+  font: inherit;
+  padding: .7rem;
+  border: 1px solid #a9b6c2;
+  border-radius: 10px;
+}
+.obrazac input:focus, .obrazac select:focus, .obrazac textarea:focus {
+  outline: 3px solid var(--plava-svijetla);
+  border-color: var(--plava);
+}
+.obrazac .btn { margin-top: 1.2rem; font-size: 1rem; }
+
+/* kvačica privole: kućica lijevo, tekst desno */
+.obrazac .privola {
+  display: flex;
+  gap: .75rem;
+  align-items: flex-start;
+  font-weight: 400;
+  font-size: .9375rem;
+}
+.obrazac .privola input {
+  width: 22px;
+  height: 22px;
+  margin-top: 2px;
+  flex-shrink: 0;
+  accent-color: var(--plava);
+}
+
+.skriveno { display: none; }
+
+.info p { margin-bottom: .5rem; }
+.info iframe { width: 100%; height: 250px; border: 0; border-radius: 12px; margin-top: 1rem; }
